@@ -1,0 +1,15 @@
+{
+  "name": "huffman_coding",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.coffee",
+  "scripts": {
+    "start": "coffee app.coffee"
+  },
+  "author": "KoutarouYabe",
+  "license": "MIT",
+  "dependencies": {
+    "coffee-script": "^1.9.3",
+    "lodash": "^3.10.0"
+  }
+}
