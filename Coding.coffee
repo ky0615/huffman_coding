@@ -68,8 +68,3 @@ class Coding
           count = count + 1 << 1
 
 module.exports = Coding
-
-
-
-
-

@@ -1,6 +1,14 @@
 Coding = new (require "./Coding")
 
-console.log JSON.stringify Coding.makeNode(), null, "  "
+Coding.makeNode()
+
+console.log JSON.stringify Coding.node, null, "  "
+
+count = 0
+
 for data in Coding.dic
-  console.log data.key
-  console.log Coding.encode data.key
+  enc = Coding.encode data.key
+  console.log data.key, enc.value, enc.bin.length, enc.bin
+  count += enc.bin.length * enc.value
+
+console.log "平均符号長:", count
