@@ -4,7 +4,7 @@
 
 ### Require
 
-OS: *nix (I don't know runnig on the windows)
+OS: *nix (I don't know runnig on the windows)  
 node >= 0.12.x
 
 ### Initialize and start
