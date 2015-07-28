@@ -105,8 +105,8 @@ class Coding
     s = []
     v = []
     result = []
-    # when goto left, push to the `1` of v
-    # when goto right, push to the `0` of v
+    # when goto left, push to the `0` of v
+    # when goto right, push to the `1` of v
     # before the order, push to root tree of s
     tree = @node
     s.push tree
@@ -121,47 +121,36 @@ class Coding
         tree.left = null
         s.push tree
         tree = t
-        v.push 1
+        v.push 0
         continue
       else if tree?.right
+        # access to right
         t = tree.right
         tree.right = null
         s.push tree
         tree = t
-        v.push 0
+        v.push 1
         continue
       else if tree?.dic
         res =
-          tree: tree
-          bin: v
+          key: tree.dic.key
+          count: tree.dic.value
+          bin: v.join("")
         result.push res
         console.log res
-
-        # delete this node of `v` stack
-        s.pop()
-        v.pop()
 
         # pop to the stack
         tree = s.pop()
         v.pop()
 
-
-        # if v.slice(-1)[0] is 1
-        #   tree.left = null
-        # else
-        #   tree.right = null
-      console.log "stack:", s.length
       while true
+        # pop to the stack to the branch leaves
         if tree?.left is null and tree?.right is null
           tree = s.pop()
           v.pop()
         else
           break
-
-
-    console.log "\n\n\n\nfinish!\n\n\n"
-    # console.log JSON.stringify result, null, "  "
-
+    return result
 
   encode: (val)->
     unless val
