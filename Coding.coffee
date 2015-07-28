@@ -1,11 +1,10 @@
 _ = require "lodash"
 
 getNewNode = (right, left)->
-  return new Node null, 1, right, left
+  return new Node null, right, left
 
 class Node
-  constructor: (dic, type=0, right, left)->
-    @type = type
+  constructor: (dic, right, left)->
     @getCount dic, right, left
     @dic = dic
     @right = right
@@ -68,39 +67,6 @@ class Coding
       que.unshift getNewNode que.shift(), que.shift()
       que = @sortQue que
 
-  makeDic: ->
-    dic = []
-    tmp = []
-    # while true
-    while true
-      n = @_search @node
-      console.log n
-      if n is undefined
-        return
-
-  find: (text)->
-    @resule = []
-    dic = null
-    for d in @dic
-      if d.key is text
-        dic = d
-        break
-    unless dic
-      console.error "not found the text"
-      return
-    @_search dic, @node
-
-  _search: (dic, node)->
-    count = dic.value
-    if node.dic
-      @result.push node.dic
-      return node
-    unless node.left or node.right
-      @_search dic, node.parent
-    # cache
-    node.right.parent = node.left.parent = node
-    @_search dic, node.right
-
   stack: ->
     s = []
     v = []
@@ -151,27 +117,5 @@ class Coding
         else
           break
     return result
-
-  encode: (val)->
-    unless val
-      console.error "value is not defined"
-      return
-    count = 0
-    cnode = _.clone @node, true
-    while true
-      if cnode.type is 1
-        if cnode.right.dic.key is val
-          if cnode.left.type is 0
-            count++
-          cnode.right.dic.count = count
-          cnode.right.dic.bin = count.toString(2)
-          return cnode.right.dic
-        else
-          if cnode.left.type is 0
-            cnode.left.dic.count = count
-            cnode.left.dic.bin = count.toString 2
-            return cnode.left.dic
-          cnode = cnode.left
-          count = count + 1 << 1
 
 module.exports = Coding
