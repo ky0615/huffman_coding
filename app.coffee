@@ -2,8 +2,25 @@ Coding = new (require "./Coding")
 
 Coding.makeNode()
 
-console.log JSON.stringify Coding.node, null, "  "
+# Coding.makeDic()
+# console.log JSON.stringify Coding.node, null, "  "
+# console.log ""
+# console.log Coding.dic
 
+# console.log Coding.find "G"
+# console.log JSON.stringify Coding.node, ((k,v)->
+#     # if k is "type"
+#     #   return undefined
+#     # unless v
+#     #   return undefined
+#     return v
+#   ), "  "
+
+
+Coding.stack()
+
+
+return
 count = 0
 
 for data in Coding.dic

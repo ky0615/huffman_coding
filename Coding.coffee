@@ -1,7 +1,21 @@
 _ = require "lodash"
 
+getNewNode = (right, left)->
+  return new Node null, 1, right, left
+
 class Node
-  constructor: (@dic, @type, @right, @left)->
+  constructor: (dic, type=0, right, left)->
+    @type = type
+    @getCount dic, right, left
+    @dic = dic
+    @right = right
+    @left = left
+
+  getCount: (dic, right, left)->
+    if right and left
+      @count = right.count + left.count
+    else if dic
+      @count = dic.value
 
 class Coding
   # s/*/space/
@@ -35,15 +49,119 @@ class Coding
     {key: "*", value: 0.1859},
   ]
 
-  makeNode: ->
-    # copy to the dictionary
-    dic = @dic.concat()
+  sortQue: (que)->
+    que.sort (a,b)->
+      if a.count > b.count
+        return 1
+      else
+        return -1
 
-    @node = new Node null, 1, new Node(dic.shift(), 0), new Node(dic.shift(), 0)
+  makeNode: ->
+    que = []
+    for d in @dic
+      que.push new Node d
+
     while true
-      if dic.length is 0
-        return @node
-      @node = new Node null, 1, new Node(dic.shift(), 0), @node
+      if que.length is 1
+        @node = que[0]
+        return que[0]
+      que.unshift getNewNode que.shift(), que.shift()
+      que = @sortQue que
+
+  makeDic: ->
+    dic = []
+    tmp = []
+    # while true
+    while true
+      n = @_search @node
+      console.log n
+      if n is undefined
+        return
+
+  find: (text)->
+    @resule = []
+    dic = null
+    for d in @dic
+      if d.key is text
+        dic = d
+        break
+    unless dic
+      console.error "not found the text"
+      return
+    @_search dic, @node
+
+  _search: (dic, node)->
+    count = dic.value
+    if node.dic
+      @result.push node.dic
+      return node
+    unless node.left or node.right
+      @_search dic, node.parent
+    # cache
+    node.right.parent = node.left.parent = node
+    @_search dic, node.right
+
+  stack: ->
+    s = []
+    v = []
+    result = []
+    # when goto left, push to the `1` of v
+    # when goto right, push to the `0` of v
+    # before the order, push to root tree of s
+    tree = @node
+    s.push tree
+    while true
+      if s.length is 0
+        console.log "finish"
+        break
+
+      if tree?.left
+        # access to left
+        t = tree.left
+        tree.left = null
+        s.push tree
+        tree = t
+        v.push 1
+        continue
+      else if tree?.right
+        t = tree.right
+        tree.right = null
+        s.push tree
+        tree = t
+        v.push 0
+        continue
+      else if tree?.dic
+        res =
+          tree: tree
+          bin: v
+        result.push res
+        console.log res
+
+        # delete this node of `v` stack
+        s.pop()
+        v.pop()
+
+        # pop to the stack
+        tree = s.pop()
+        v.pop()
+
+
+        # if v.slice(-1)[0] is 1
+        #   tree.left = null
+        # else
+        #   tree.right = null
+      console.log "stack:", s.length
+      while true
+        if tree?.left is null and tree?.right is null
+          tree = s.pop()
+          v.pop()
+        else
+          break
+
+
+    console.log "\n\n\n\nfinish!\n\n\n"
+    # console.log JSON.stringify result, null, "  "
+
 
   encode: (val)->
     unless val
